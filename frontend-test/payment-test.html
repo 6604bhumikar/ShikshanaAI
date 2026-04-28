@@ -1,0 +1,338 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Razorpay Test</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+<button onclick="startPayment()">Pay ₹499</button>
+
+<script>
+let studentToken = "";
+
+async function loginStudent() {
+  const response = await fetch("http://localhost:5000/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: "student@test.com",
+      password: "123456"
+    })
+    
+  });
+
+console.log("Login Response:", data);
+  const data = await response.json();
+  studentToken = data.token;
+  console.log("New Token:", studentToken);
+}
+
+async function startPayment() {
+
+  if (!studentToken) {
+    await loginStudent();
+  }
+
+  console.log("Using Token:", studentToken);
+
+  const orderResponse = await fetch("http://localhost:5000/api/payment/create-order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + studentToken
+    },
+    body: JSON.stringify({
+      courseId: "699e0cbcdb54bdedc5f4c7d3",
+      amount: 499
+    })
+  });
+
+  if (!orderResponse.ok) {
+    const error = await orderResponse.json();
+    console.error("Order Error:", error);
+    alert("Order Failed: " + error.message);
+    return;
+  }
+
+  const orderData = await orderResponse.json();
+
+  const options = {
+    key: "rzp_test_SK1bumLCmbklsd",
+    amount: orderData.order.amount,
+    currency: "INR",
+    name: "Your LMS",
+    description: "Course Purchase",
+    order_id: orderData.order.id,
+    handler: async function (response) {
+
+      console.log("Payment Response:", response);
+
+      const verifyResponse = await fetch("http://localhost:5000/api/payment/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + studentToken
+        },
+        body: JSON.stringify({
+          courseId: "699e0cbcdb54bdedc5f4c7d3",
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature
+        })
+      });
+
+      const verifyData = await verifyResponse.json();
+      console.log("Verify Data:", verifyData);
+      alert("Payment Completed Successfully");
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+}
+</script>
+
+</body>
+</html>
+
+-->
+
+
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Razorpay Test</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+<button onclick="startPayment()">Pay ₹499</button>
+
+<script>
+let studentToken = "";
+
+async function loginStudent() {
+  const response = await fetch("http://localhost:5000/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: "student@test.com",
+      password: "123456"
+    })
+    
+  });
+
+console.log("Login Response:", data);
+  const data = await response.json();
+  studentToken = data.token;
+  console.log("New Token:", studentToken);
+}
+
+async function startPayment() {
+
+  if (!studentToken) {
+    await loginStudent();
+  }
+
+  console.log("Using Token:", studentToken);
+
+  const orderResponse = await fetch("http://localhost:5000/api/payment/create-order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + studentToken
+    },
+    body: JSON.stringify({
+      courseId: "699e0cbcdb54bdedc5f4c7d3",
+      amount: 499
+    })
+  });
+
+  if (!orderResponse.ok) {
+    const error = await orderResponse.json();
+    console.error("Order Error:", error);
+    alert("Order Failed: " + error.message);
+    return;
+  }
+
+  const orderData = await orderResponse.json();
+
+  const options = {
+    key: "rzp_test_SK1bumLCmbklsd",
+    amount: orderData.order.amount,
+    currency: "INR",
+    name: "Your LMS",
+    description: "Course Purchase",
+    order_id: orderData.order.id,
+    handler: async function (response) {
+
+      console.log("Payment Response:", response);
+
+      const verifyResponse = await fetch("http://localhost:5000/api/payment/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + studentToken
+        },
+        body: JSON.stringify({
+          courseId: "699e0cbcdb54bdedc5f4c7d3",
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature
+        })
+      });
+
+      const verifyData = await verifyResponse.json();
+      console.log("Verify Data:", verifyData);
+      alert("Payment Completed Successfully");
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+}
+</script>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Razorpay Test</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+<button onclick="startPayment()">Pay ₹499</button>
+
+<script>
+
+let studentToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTllMGI0MmRlODkzNjkwMDljNzU2NzAiLCJyb2xlIjoic3R1ZGVudCIsInRva2VuVmVyc2lvbiI6MCwiaWF0IjoxNzcxOTY1ODI3LCJleHAiOjE3NzE5NjY3Mjd9.xG-PF7oP4nfObkzeFJgY4Bxelh9BzNP9f1IxFlwVzQc";
+
+/* ==============================
+   LOGIN FUNCTION (FIXED)
+============================== */
+async function loginStudent() {
+  try {
+
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: "student@test.com",
+        password: "123456"
+      })
+    });
+
+    const data = await response.json();   // ✅ DECLARED FIRST
+
+    console.log("Login Response:", data); // ✅ USED AFTER DECLARATION
+
+    if (!response.ok || !data.token) {
+      alert("Login failed: " + data.message);
+      return;
+    }
+
+    studentToken = data.token;
+    console.log("Token Stored:", studentToken);
+
+  } catch (error) {
+    console.error("Login Error:", error);
+  }
+}
+
+
+/* ==============================
+   PAYMENT FLOW
+============================== */
+async function startPayment() {
+
+  try {
+
+    /* 1️⃣ Always login fresh */
+    await loginStudent();
+
+    if (!studentToken) {
+      alert("Token not generated");
+      return;
+    }
+
+    console.log("Using Token:", studentToken);
+
+    /* 2️⃣ Create Order */
+    const orderResponse = await fetch("http://localhost:5000/api/payment/create-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + studentToken
+      },
+      body: JSON.stringify({
+        courseId: "699e0cbcdb54bdedc5f4c7d3",  // Replace if needed
+        amount: 499
+      })
+    });
+
+    const orderData = await orderResponse.json();
+    console.log("Create Order Response:", orderData);
+
+    if (!orderResponse.ok) {
+      alert("Order Failed: " + orderData.message);
+      return;
+    }
+
+    /* 3️⃣ Razorpay Checkout */
+    const options = {
+      key: "rzp_test_SK1bumLCmbklsd",
+      amount: orderData.order.amount,
+      currency: "INR",
+      name: "Your LMS",
+      description: "Course Purchase",
+      order_id: orderData.order.id,
+
+      handler: async function (response) {
+
+        console.log("Payment Completed");
+        console.log("Razorpay Response:", response);
+
+        /* 4️⃣ Verify Payment */
+        const verifyResponse = await fetch("http://localhost:5000/api/payment/verify", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + studentToken
+          },
+          body: JSON.stringify({
+            courseId: "699e0cbcdb54bdedc5f4c7d3",
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature
+          })
+        });
+
+        const verifyData = await verifyResponse.json();
+        console.log("Verify Response:", verifyData);
+
+        if (verifyResponse.ok) {
+          alert("✅ Payment Successful & Enrollment Created");
+        } else {
+          alert("❌ Verify Failed: " + verifyData.message);
+        }
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+
+  } catch (error) {
+    console.error("Payment Flow Error:", error);
+  }
+}
+
+</script>
+
+</body>
+</html>

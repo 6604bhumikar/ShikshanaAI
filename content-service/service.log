@@ -1,0 +1,103 @@
+Content Service running on port 5002
+Content DB connected
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+Role received: teacher
+D:\SHIKSHANA-AI-LMS\content-service\node_modules\zod\v3\types.cjs:45
+                const error = new ZodError_js_1.ZodError(ctx.common.issues);
+                              ^
+
+ZodError: [
+  {
+    "code": "too_small",
+    "minimum": 10,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 10 character(s)",
+    "path": [
+      "description"
+    ]
+  }
+]
+    at get error (D:\SHIKSHANA-AI-LMS\content-service\node_modules\zod\v3\types.cjs:45:31)
+    at ZodObject.parse (D:\SHIKSHANA-AI-LMS\content-service\node_modules\zod\v3\types.cjs:120:22)
+    at createCourse (D:\SHIKSHANA-AI-LMS\content-service\dist\controllers\course.controller.js:152:58)
+    at Layer.handle [as handle_request] (D:\SHIKSHANA-AI-LMS\content-service\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\SHIKSHANA-AI-LMS\content-service\node_modules\express\lib\router\route.js:149:13)
+    at requireTeacher (D:\SHIKSHANA-AI-LMS\content-service\dist\middleware\role.middleware.js:9:5)
+    at Layer.handle [as handle_request] (D:\SHIKSHANA-AI-LMS\content-service\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\SHIKSHANA-AI-LMS\content-service\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\SHIKSHANA-AI-LMS\content-service\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\SHIKSHANA-AI-LMS\content-service\node_modules\express\lib\router\layer.js:95:5) {
+  issues: [
+    {
+      code: 'too_small',
+      minimum: 10,
+      type: 'string',
+      inclusive: true,
+      exact: false,
+      message: 'String must contain at least 10 character(s)',
+      path: [ 'description' ]
+    }
+  ],
+  addIssue: [Function (anonymous)],
+  addIssues: [Function (anonymous)]
+}
+
+Node.js v24.14.0

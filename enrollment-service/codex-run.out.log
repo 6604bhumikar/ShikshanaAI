@@ -1,0 +1,80 @@
+
+> enrollment-service@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 22:50:24 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+Enrollment Service running on port 5004
+Enrollment DB connected
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: false
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b452bc00ff6edf1d84',
+  enrolled: false
+}
+[enrollment] Enroll request {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b452bc00ff6edf1d84'
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b452bc00ff6edf1d84',
+  enrolled: true
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b452bc00ff6edf1d84',
+  enrolled: true
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b452bc00ff6edf1d84',
+  enrolled: true
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: false
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: false
+}
+[enrollment] Enroll request {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79'
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: true
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: true
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: true
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: true
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: true
+}
+[enrollment] Check enrollment {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  enrolled: true
+}

@@ -1,0 +1,12 @@
+Connecting to: mongodb://localhost:27017/auth-db
+(node:11300) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Auth Service running on port 5001
+Auth DB connected
+REGISTER ERROR: Error: Email already registered
+    at createAuthError (D:\SHIKSHANA-AI-LMS\auth-service\dist\services\auth.service.js:15:19)
+    at registerUser (D:\SHIKSHANA-AI-LMS\auth-service\dist\services\auth.service.js:50:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async register (D:\SHIKSHANA-AI-LMS\auth-service\dist\controllers\auth.controller.js:13:22) {
+  statusCode: 409
+}

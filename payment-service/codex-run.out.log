@@ -1,0 +1,83 @@
+
+> payment-service@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 22:50:26 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+Razorpay Key: rzp_test_SK1bumLCmbklsd
+Payment Service running on port 5005
+Payment DB connected
+[payment] Create order request {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  couponCode: undefined
+}
+[payment] Resolved course price {
+  courseId: '69ee49b352bc00ff6edf1d79',
+  coursePrice: 1234,
+  discountPercent: 0,
+  payableAmount: 1234,
+  payableAmountPaise: 123400
+}
+[payment] Razorpay order created {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  razorpayOrderId: 'order_SiCaQ7NcwU8L6h',
+  amountRupees: 1234,
+  amountPaise: 123400
+}
+[payment] Create order request {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b452bc00ff6edf1d84',
+  couponCode: undefined
+}
+[payment] Create order request {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  couponCode: undefined
+}
+[payment] Resolved course price {
+  courseId: '69ee49b352bc00ff6edf1d79',
+  coursePrice: 1234,
+  discountPercent: 0,
+  payableAmount: 1234,
+  payableAmountPaise: 123400
+}
+[payment] Razorpay order created {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  razorpayOrderId: 'order_SiCidXutVtyrke',
+  amountRupees: 1234,
+  amountPaise: 123400
+}
+[payment] Create order request {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  couponCode: undefined
+}
+[payment] Resolved course price {
+  courseId: '69ee49b352bc00ff6edf1d79',
+  coursePrice: 1234,
+  discountPercent: 0,
+  payableAmount: 1234,
+  payableAmountPaise: 123400
+}
+[payment] Razorpay order created {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  razorpayOrderId: 'order_SiCxipoQlAiZ2x',
+  amountRupees: 1234,
+  amountPaise: 123400
+}
+[payment] Verify payment request {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  razorpay_order_id: 'order_SiCxipoQlAiZ2x',
+  razorpay_payment_id: 'pay_SiD6spMEZOUYNX'
+}
+[payment] Payment verified and enrollment completed {
+  studentId: '69ee49b256e3ce9b5b03b538',
+  courseId: '69ee49b352bc00ff6edf1d79',
+  razorpayOrderId: 'order_SiCxipoQlAiZ2x',
+  paymentId: 'pay_SiD6spMEZOUYNX',
+  alreadyEnrolled: false
+}

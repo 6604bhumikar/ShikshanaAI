@@ -1,0 +1,11 @@
+Error: listen EADDRINUSE: address already in use :::5006
+    at Server.setupListenHandle [as _listen2] (node:net:1948:16)
+    at listenInCluster (node:net:2005:12)
+    at Server.listen (node:net:2110:7)
+    at app.listen (D:\SHIKSHANA-AI-LMS\media-service\node_modules\express\lib\application.js:635:24)
+    at Object.<anonymous> (D:\SHIKSHANA-AI-LMS\media-service\src\server.ts:17:5)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1812:14)
+    at Module._compile (D:\SHIKSHANA-AI-LMS\media-service\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\Admin\AppData\Local\Temp\ts-node-dev-hook-571785846567227.js:69:33)
+    at node:internal/modules/cjs/loader:1943:10
+    at require.extensions..jsx.require.extensions..js (C:\Users\Admin\AppData\Local\Temp\ts-node-dev-hook-571785846567227.js:114:20)

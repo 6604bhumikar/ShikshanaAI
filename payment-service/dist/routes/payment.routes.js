@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const payment_controller_1 = require("../controllers/payment.controller");
+const role_middleware_1 = require("../middleware/role.middleware");
+const router = (0, express_1.Router)();
+router.post("/create-order", role_middleware_1.requireStudent, payment_controller_1.createOrderController);
+router.post("/verify", role_middleware_1.requireStudent, payment_controller_1.verifyPaymentController);
+router.get("/my-payments", role_middleware_1.requireStudent, payment_controller_1.getMyPayments);
+router.post("/payments/create-order", role_middleware_1.requireStudent, payment_controller_1.createOrderController);
+router.post("/payments/verify-payment", role_middleware_1.requireStudent, payment_controller_1.verifyPaymentController);
+router.get("/orders", role_middleware_1.requireStudent, payment_controller_1.getOrders);
+router.get("/orders/:id/invoice", role_middleware_1.requireStudent, payment_controller_1.getInvoiceHtml);
+router.get("/orders/:id/invoice/download", role_middleware_1.requireStudent, payment_controller_1.downloadInvoicePdf);
+router.get("/:id", role_middleware_1.requireStudent, payment_controller_1.getPaymentById);
+exports.default = router;
