@@ -1,0 +1,13 @@
+vendor_id,vendor_name,category,region,revenue,cost,stock_value,unsold_stock_value,units_sold,units_received,on_time_delivery_pct,defect_rate_pct,lead_time_days,return_rate_pct,po_count,contract_risk_score,payment_terms_days
+VND-001,Apex Components,Electronics,West,1840000,1289000,420000,96000,18400,21000,94,1.8,12,2.4,86,28,30
+VND-002,BluePeak Logistics,Logistics,North,990000,801000,180000,54000,8600,10500,88,2.9,18,3.1,52,43,45
+VND-003,Cedar Foods,Grocery,South,1430000,1033000,390000,148000,25100,30100,91,1.3,9,1.9,74,24,15
+VND-004,Delta Packaging,Packaging,East,760000,591000,210000,93000,13200,16800,82,4.1,21,5.2,49,61,60
+VND-005,Echo Textiles,Apparel,West,1180000,884000,510000,214000,16400,22700,79,3.8,24,4.7,58,67,45
+VND-006,Fusion Office,Office Supplies,North,640000,454000,125000,28000,9700,11000,96,0.9,7,1.2,41,18,30
+VND-007,Greenline Farms,Grocery,East,1560000,1092000,445000,89000,28200,31000,93,1.1,8,1.7,82,21,15
+VND-008,Horizon Hardware,Industrial,South,2120000,1632000,780000,304000,12100,17100,84,2.7,27,3.8,69,55,60
+VND-009,Indigo Medical,Healthcare,West,2680000,1810000,360000,43000,15400,16600,98,0.7,11,0.8,77,14,30
+VND-010,Juno Retail,Apparel,North,910000,728000,355000,191000,11100,16200,74,5.2,28,6.3,46,76,60
+VND-011,Kite Renewables,Industrial,East,1720000,1256000,620000,137000,9000,10700,90,1.6,19,2.2,63,37,45
+VND-012,Lumen Labs,Healthcare,South,2360000,1567000,290000,32000,13900,14800,97,0.8,10,1.1,71,16,30

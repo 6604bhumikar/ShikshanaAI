@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd vendor-performance-analysis && npm run build",
+  "outputDirectory": "vendor-performance-analysis/dist",
+  "cleanUrls": true,
+  "trailingSlash": false
+}

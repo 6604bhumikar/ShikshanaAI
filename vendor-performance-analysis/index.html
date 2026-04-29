@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Vendor Performance Analysis dashboard for vendor trends, unsold capital, operational risk, and business recommendations." />
+    <title>Vendor Performance Analysis</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Python | SQL | Power BI | Pandas | Excel</p>
+        <h1>Vendor Performance Analysis</h1>
+      </div>
+      <div class="header-actions" aria-label="Dashboard actions">
+        <button class="icon-button" id="downloadCsv" title="Download scored vendors" aria-label="Download scored vendors">
+          <span aria-hidden="true">CSV</span>
+        </button>
+        <a class="icon-button" href="./data/vendor_performance.csv" title="Open source data" aria-label="Open source data">
+          <span aria-hidden="true">DB</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="control-band" aria-label="Filters">
+        <label>
+          <span>Region</span>
+          <select id="regionFilter"></select>
+        </label>
+        <label>
+          <span>Category</span>
+          <select id="categoryFilter"></select>
+        </label>
+        <label>
+          <span>Action</span>
+          <select id="recommendationFilter"></select>
+        </label>
+        <label>
+          <span>Risk ceiling</span>
+          <input id="riskFilter" type="range" min="10" max="100" value="100" />
+        </label>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key performance indicators">
+        <article class="kpi">
+          <span>Total revenue</span>
+          <strong id="totalRevenue">$0</strong>
+          <small id="revenueNote">Across selected vendors</small>
+        </article>
+        <article class="kpi">
+          <span>Gross margin</span>
+          <strong id="grossMargin">0%</strong>
+          <small>Weighted by revenue</small>
+        </article>
+        <article class="kpi warning">
+          <span>Unsold capital</span>
+          <strong id="unsoldCapital">$0</strong>
+          <small id="unsoldNote">Inventory cash exposure</small>
+        </article>
+        <article class="kpi">
+          <span>Delivery health</span>
+          <strong id="deliveryHealth">0%</strong>
+          <small>Average on-time delivery</small>
+        </article>
+      </section>
+
+      <section class="insight-strip" aria-label="Recommendation highlights">
+        <div>
+          <span>Negotiation target</span>
+          <strong id="negotiationTarget">-</strong>
+        </div>
+        <div>
+          <span>Preferred expansion</span>
+          <strong id="preferredTarget">-</strong>
+        </div>
+        <div>
+          <span>Capital release idea</span>
+          <strong id="capitalRelease">-</strong>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="panel wide">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Trend and category signal</p>
+              <h2>Revenue vs Unsold Capital</h2>
+            </div>
+            <span id="vendorCount">0 vendors</span>
+          </div>
+          <div id="categoryBars" class="bar-chart" aria-label="Category bar chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Portfolio risk</p>
+              <h2>Vendor Quadrant</h2>
+            </div>
+          </div>
+          <div id="quadrant" class="quadrant" aria-label="Risk quadrant chart"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Action mix</p>
+              <h2>Recommendation Split</h2>
+            </div>
+          </div>
+          <div id="recommendationDonut" class="donut-wrap"></div>
+        </article>
+      </section>
+
+      <section class="table-section">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Vendor scorecard</p>
+            <h2>Ranked Business Actions</h2>
+          </div>
+          <input id="searchInput" type="search" placeholder="Search vendor..." aria-label="Search vendor" />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Vendor</th>
+                <th>Category</th>
+                <th>Region</th>
+                <th>Revenue</th>
+                <th>Margin</th>
+                <th>Unsold %</th>
+                <th>Delivery</th>
+                <th>Risk</th>
+                <th>Recommendation</th>
+              </tr>
+            </thead>
+            <tbody id="vendorTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
