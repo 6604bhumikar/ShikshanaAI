@@ -1,5 +1,0 @@
-dist/
-.chrome-profile*/
-server.*.log
-excel/*.xlsx
-data/vendor_performance_generated.csv
