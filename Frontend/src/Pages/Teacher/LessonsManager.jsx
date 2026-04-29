@@ -21,6 +21,9 @@ const Icons = {
   Trash: () => (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
   ),
+  Upload: () => (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12V4m0 0l-4 4m4-4l4 4" /></svg>
+  ),
   CheckCircle: () => (
     <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
   ),
@@ -202,6 +205,19 @@ export default function LessonsManager() {
     }
   };
 
+  const openRecorder = (lessonId = "") => {
+    const params = new URLSearchParams({
+      courseId,
+      unitId,
+    });
+
+    if (lessonId) {
+      params.set("lessonId", lessonId);
+    }
+
+    navigate(`/teacher/recorder?${params.toString()}`);
+  };
+
   /* ======================
      RENDER
   ====================== */
@@ -281,7 +297,15 @@ export default function LessonsManager() {
               </div>
 
               {/* Action Button */}
-              <div className="flex justify-end pt-2">
+              <div className="flex flex-col sm:flex-row sm:justify-end gap-3 pt-2">
+                <button
+                  onClick={() => openRecorder()}
+                  type="button"
+                  className="border border-indigo-200 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-5 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2"
+                >
+                  <Icons.Upload />
+                  Record / Upload Video
+                </button>
                 <button
                   onClick={addLesson}
                   disabled={saving}
@@ -339,6 +363,14 @@ export default function LessonsManager() {
                         </div>
                       </div>
                     </div>
+
+                    <button
+                      onClick={() => openRecorder(lesson._id)}
+                      className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+                      title="Record or upload video for this lesson"
+                    >
+                      <Icons.Upload />
+                    </button>
 
                     <button
                       onClick={() => triggerDelete(index)}

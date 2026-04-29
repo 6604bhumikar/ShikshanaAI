@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 import {
   Camera,
   CheckCircle2,
@@ -29,14 +30,6 @@ const getSupportedMimeType = () => {
   return types.find((type) => MediaRecorder.isTypeSupported(type)) || "";
 };
 
-const readFileAsDataUrl = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error("Failed to read video file"));
-    reader.readAsDataURL(file);
-  });
-
 const getVideoDuration = (file) =>
   new Promise((resolve) => {
     const url = URL.createObjectURL(file);
@@ -55,6 +48,7 @@ const getVideoDuration = (file) =>
   });
 
 export default function RecorderPage() {
+  const [searchParams] = useSearchParams();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const previewUrlRef = useRef("");
@@ -66,7 +60,7 @@ export default function RecorderPage() {
   const [recorder, setRecorder] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
   const [recording, setRecording] = useState(false);
-  const [recordingMode, setRecordingMode] = useState("screen");
+  const [recordingMode, setRecordingMode] = useState("camera");
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [statusMessage, setStatusMessage] = useState("");
@@ -81,7 +75,13 @@ export default function RecorderPage() {
 
   const API = import.meta.env.VITE_API_MEDIA || "http://localhost:5000/api/media";
   const TEACHER_API = import.meta.env.VITE_API_TEACHER || "http://localhost:5000/api/teacher";
-  const token = localStorage.getItem("accessToken");
+  const token =
+    localStorage.getItem("accessToken") ||
+    localStorage.getItem("token") ||
+    localStorage.getItem("Token");
+  const initialCourseId = searchParams.get("courseId") || "";
+  const initialUnitId = searchParams.get("unitId") || "";
+  const initialLessonId = searchParams.get("lessonId") || "";
 
   const selectedUnit = units.find((unit) => unit._id === selectedUnitId);
   const lessons = selectedUnit?.lessons || [];
@@ -90,6 +90,8 @@ export default function RecorderPage() {
     setStatusMessage(message);
     setStatusType(type);
   };
+
+  const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
   const clearPreview = () => {
   if (previewUrlRef.current) {
@@ -123,19 +125,39 @@ export default function RecorderPage() {
 
   useEffect(() => {
     const loadCourses = async () => {
+      if (!token) {
+        setCourses([]);
+        setMessage("Please log in as a teacher to load your courses.", "error");
+        return;
+      }
+
       try {
         const res = await axios.get(`${TEACHER_API}/courses`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: authHeaders,
         });
-        setCourses(Array.isArray(res.data) ? res.data : []);
+        const loadedCourses = Array.isArray(res.data) ? res.data : res.data?.courses || [];
+        setCourses(loadedCourses);
+        if (!loadedCourses.length) {
+          setMessage("No courses found for this teacher account. Create a course first.", "info");
+        }
       } catch (err) {
         console.error("Failed to load courses for recorder", err);
-        setMessage("Could not load your courses. Please refresh and try again.", "error");
+        const message =
+          err?.response?.status === 401
+            ? "Your login session has expired. Please log in again as a teacher."
+            : err?.response?.data?.message || "Could not load your courses. Please refresh and try again.";
+        setMessage(message, "error");
       }
     };
 
-    if (token) loadCourses();
+    loadCourses();
   }, [TEACHER_API, token]);
+
+  useEffect(() => {
+    if (initialCourseId) {
+      setSelectedCourseId(initialCourseId);
+    }
+  }, [initialCourseId]);
 
   useEffect(() => {
     const loadUnits = async () => {
@@ -148,9 +170,13 @@ export default function RecorderPage() {
 
       try {
         const res = await axios.get(`${TEACHER_API}/courses/${selectedCourseId}/units`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: authHeaders,
         });
-        setUnits(Array.isArray(res.data?.units) ? res.data.units : []);
+        const loadedUnits = Array.isArray(res.data?.units) ? res.data.units : [];
+        setUnits(loadedUnits);
+        if (initialUnitId && loadedUnits.some((unit) => unit._id === initialUnitId)) {
+          setSelectedUnitId(initialUnitId);
+        }
       } catch (err) {
         console.error("Failed to load units for recorder", err);
         setUnits([]);
@@ -159,11 +185,25 @@ export default function RecorderPage() {
     };
 
     loadUnits();
-  }, [TEACHER_API, selectedCourseId, token]);
+  }, [TEACHER_API, initialUnitId, selectedCourseId, token]);
 
   useEffect(() => {
+    if (!selectedUnitId) {
+      setSelectedLessonId("");
+      return;
+    }
+
+    if (initialLessonId && lessons.some((lesson) => lesson._id === initialLessonId)) {
+      setSelectedLessonId(initialLessonId);
+      const lesson = lessons.find((item) => item._id === initialLessonId);
+      if (lesson?.title) {
+        setRecordingTitle(lesson.title);
+      }
+      return;
+    }
+
     setSelectedLessonId("");
-  }, [selectedUnitId]);
+  }, [initialLessonId, lessons, selectedUnitId]);
 
   useEffect(() => {
     return () => {
@@ -386,8 +426,16 @@ export default function RecorderPage() {
       setMessage("Record or choose a saved video first.", "error");
       return;
     }
+    if (!token) {
+      setMessage("Please log in as a teacher before uploading a recording.", "error");
+      return;
+    }
     if (!selectedCourseId) {
       setMessage("Please select a course before uploading.", "error");
+      return;
+    }
+    if (!selectedUnitId) {
+      setMessage("Please select a module so the recording can be added to the course lessons.", "error");
       return;
     }
 
@@ -395,21 +443,19 @@ export default function RecorderPage() {
       setUploading(true);
       setUploadProgress(0);
       setMessage("Preparing upload...", "info");
-      const fileData = await readFileAsDataUrl(videoFile);
+      const formData = new FormData();
+      formData.append("courseId", selectedCourseId);
+      formData.append("moduleId", selectedUnitId);
+      formData.append("lessonId", selectedLessonId || "standalone");
+      formData.append("title", recordingTitle.trim() || "Class Recording");
+      formData.append("duration", String(duration || 0));
+      formData.append("video", videoFile, videoFile.name || `recording-${Date.now()}.webm`);
 
       const res = await axios.post(
         `${API}/upload`,
+        formData,
         {
-          courseId: selectedCourseId,
-          moduleId: selectedUnitId || "",
-          lessonId: selectedLessonId || "standalone",
-          title: recordingTitle.trim() || "Class Recording",
-          duration,
-          fileName: videoFile.name || `recording-${Date.now()}.webm`,
-          fileData,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: authHeaders,
           onUploadProgress: (progressEvent) => {
             if (!progressEvent.total) return;
             setUploadProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
@@ -417,10 +463,23 @@ export default function RecorderPage() {
         }
       );
 
+      if (!selectedLessonId) {
+        await axios.post(
+          `${TEACHER_API}/courses/${selectedCourseId}/units/${selectedUnitId}/lessons`,
+          {
+            title: recordingTitle.trim() || "Class Recording",
+            type: "video",
+            contentUrl: res.data?.streamUrl,
+            duration,
+          },
+          { headers: authHeaders }
+        );
+      }
+
       setMessage(
         selectedLessonId
           ? "Upload complete and attached to the selected lesson."
-          : "Upload complete. The recording is saved for this course.",
+          : "Upload complete and added as a new lesson in the selected module.",
         "success"
       );
       console.log("Uploaded recording stream:", res.data?.streamUrl);
@@ -542,7 +601,7 @@ export default function RecorderPage() {
         <aside className="bg-slate-900 border border-slate-800 rounded-lg p-5 h-fit space-y-4">
           <div>
             <h2 className="text-lg font-bold text-white">Upload Details</h2>
-            <p className="text-sm text-slate-400">Attach to a lesson, or save it against the course/module.</p>
+            <p className="text-sm text-slate-400">Attach to an existing lesson, or create a new video lesson in a module.</p>
           </div>
 
           <label className="block">

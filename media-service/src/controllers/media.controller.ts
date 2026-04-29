@@ -116,6 +116,7 @@ export const uploadMedia = async (req: any, res: Response) => {
         {
           contentUrl: streamUrl,
           title: recordingTitle,
+          duration: Number(duration || 0),
         },
         {
           headers: {

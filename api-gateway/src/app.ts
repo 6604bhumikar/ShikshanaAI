@@ -45,6 +45,27 @@ const proxyJson = async (
   return res.status(response.status).json(response.data);
 };
 
+const proxyMultipart = async (
+  req: any,
+  res: express.Response,
+  targetUrl: string
+) => {
+  const response = await axios({
+    method: req.method,
+    url: targetUrl,
+    data: req,
+    maxBodyLength: Infinity,
+    maxContentLength: Infinity,
+    headers: {
+      ...req.headers,
+      "x-user-id": req.user?.userId,
+      "x-user-role": req.user?.role,
+    },
+  });
+
+  return res.status(response.status).json(response.data);
+};
+
 const proxyBinary = async (
   req: any,
   res: express.Response,
@@ -197,7 +218,17 @@ app.use("/api/payment", async (req: any, res) => {
 app.use("/api/media", async (req: any, res) => {
   try {
     const targetPath = req.originalUrl;
-    await proxyJson(req, res, `http://localhost:5006${targetPath}`);
+    const targetUrl = `http://localhost:5006${targetPath}`;
+
+    if (targetPath.startsWith("/api/media/stream/")) {
+      return await proxyBinary(req, res, targetUrl);
+    }
+
+    if (String(req.headers["content-type"] || "").startsWith("multipart/form-data")) {
+      return await proxyMultipart(req, res, targetUrl);
+    }
+
+    await proxyJson(req, res, targetUrl);
   } catch (error: any) {
     handleAxiosError(res, error, "Media service unavailable");
   }

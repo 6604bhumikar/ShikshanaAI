@@ -532,7 +532,7 @@ export const addLesson = async (req: Request, res: Response) => {
 
 export const attachLessonMedia = async (req: Request, res: Response) => {
   const teacherId = req.headers["x-user-id"] as string;
-  const { contentUrl, title } = req.body;
+  const { contentUrl, title, duration } = req.body;
 
   if (!contentUrl) {
     return res.status(400).json({ message: "Media URL is required" });
@@ -566,6 +566,9 @@ export const attachLessonMedia = async (req: Request, res: Response) => {
   targetLesson.textContent = undefined;
   if (title) {
     targetLesson.title = String(title).trim();
+  }
+  if (duration !== undefined) {
+    targetLesson.duration = normalizePrice(duration);
   }
 
   await course.save();
