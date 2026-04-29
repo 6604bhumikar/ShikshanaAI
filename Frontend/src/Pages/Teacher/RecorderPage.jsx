@@ -47,6 +47,8 @@ const getVideoDuration = (file) =>
     video.src = url;
   });
 
+const getRecordId = (record) => String(record?._id || record?.id || "");
+
 export default function RecorderPage() {
   const [searchParams] = useSearchParams();
   const videoRef = useRef(null);
@@ -83,7 +85,7 @@ export default function RecorderPage() {
   const initialUnitId = searchParams.get("unitId") || "";
   const initialLessonId = searchParams.get("lessonId") || "";
 
-  const selectedUnit = units.find((unit) => unit._id === selectedUnitId);
+  const selectedUnit = units.find((unit) => getRecordId(unit) === selectedUnitId);
   const lessons = selectedUnit?.lessons || [];
 
   const setMessage = (message, type = "info") => {
@@ -172,10 +174,14 @@ export default function RecorderPage() {
         const res = await axios.get(`${TEACHER_API}/courses/${selectedCourseId}/units`, {
           headers: authHeaders,
         });
-        const loadedUnits = Array.isArray(res.data?.units) ? res.data.units : [];
+        const loadedUnits = Array.isArray(res.data?.units)
+          ? res.data.units.filter((unit) => getRecordId(unit))
+          : [];
         setUnits(loadedUnits);
-        if (initialUnitId && loadedUnits.some((unit) => unit._id === initialUnitId)) {
+        if (initialUnitId && loadedUnits.some((unit) => getRecordId(unit) === initialUnitId)) {
           setSelectedUnitId(initialUnitId);
+        } else if (!selectedUnitId && loadedUnits.length) {
+          setSelectedUnitId(getRecordId(loadedUnits[0]));
         }
       } catch (err) {
         console.error("Failed to load units for recorder", err);
@@ -185,7 +191,7 @@ export default function RecorderPage() {
     };
 
     loadUnits();
-  }, [TEACHER_API, initialUnitId, selectedCourseId, token]);
+  }, [TEACHER_API, initialUnitId, selectedCourseId, selectedUnitId, token]);
 
   useEffect(() => {
     if (!selectedUnitId) {
@@ -193,9 +199,9 @@ export default function RecorderPage() {
       return;
     }
 
-    if (initialLessonId && lessons.some((lesson) => lesson._id === initialLessonId)) {
+    if (initialLessonId && lessons.some((lesson) => getRecordId(lesson) === initialLessonId)) {
       setSelectedLessonId(initialLessonId);
-      const lesson = lessons.find((item) => item._id === initialLessonId);
+      const lesson = lessons.find((item) => getRecordId(item) === initialLessonId);
       if (lesson?.title) {
         setRecordingTitle(lesson.title);
       }
@@ -642,9 +648,9 @@ export default function RecorderPage() {
               disabled={!selectedCourseId}
               className="mt-1 w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-indigo-400 disabled:opacity-60"
             >
-              <option value="">Course level</option>
+              <option value="">Select module</option>
               {units.map((unit) => (
-                <option key={unit._id} value={unit._id}>
+                <option key={getRecordId(unit)} value={getRecordId(unit)}>
                   {unit.title}
                 </option>
               ))}
@@ -661,7 +667,7 @@ export default function RecorderPage() {
             >
               <option value="">Standalone / module recording</option>
               {lessons.map((lesson) => (
-                <option key={lesson._id} value={lesson._id}>
+                <option key={getRecordId(lesson)} value={getRecordId(lesson)}>
                   {lesson.title}
                 </option>
               ))}
